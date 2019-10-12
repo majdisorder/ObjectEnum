@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnumPlayGround", "EnumPlayGround\EnumPlayGround.csproj", "{525335E3-3AB6-4BF0-BA7F-753F280E0F57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.ValueEnum", "System.ValueEnum\System.ValueEnum.csproj", "{1855DAA5-A166-4D34-81EC-40A07869A251}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{525335E3-3AB6-4BF0-BA7F-753F280E0F57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{525335E3-3AB6-4BF0-BA7F-753F280E0F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{525335E3-3AB6-4BF0-BA7F-753F280E0F57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{525335E3-3AB6-4BF0-BA7F-753F280E0F57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1855DAA5-A166-4D34-81EC-40A07869A251}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1855DAA5-A166-4D34-81EC-40A07869A251}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1855DAA5-A166-4D34-81EC-40A07869A251}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1855DAA5-A166-4D34-81EC-40A07869A251}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C82F08D2-8AB6-4325-95F3-85AA0F80BB81}
+	EndGlobalSection
+EndGlobal
