@@ -112,13 +112,7 @@ namespace System
                     if (!Enum.TryParse<TEnum>(input, ignoreCase, out var enumVal))
                         throw new FormatException("Input string was not in a correct format");
 
-                    value = Activator.CreateInstance(
-                        typeof(TConcrete),
-                        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
-                        null,
-                        new object[] {enumVal},
-                        CultureInfo.InvariantCulture
-                    ) as TConcrete;
+                    value = NewValueEnum<TConcrete>(enumVal);
 
                     return true;
                 }
@@ -154,6 +148,25 @@ namespace System
                     $"Unable to convert {input} to {typeof(TConcrete)}. See {nameof(Exception.InnerException)} for more details.",
                     ex
                 );
+            }
+        }
+
+        public static TConcrete NewValueEnum<TConcrete>(TEnum input)
+            where TConcrete : ValueEnum<TEnum>
+        {
+            try
+            {
+                return Activator.CreateInstance(
+                    typeof(TConcrete),
+                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
+                    null,
+                    new object[] {input},
+                    CultureInfo.InvariantCulture
+                ) as TConcrete;
+            }
+            catch (TargetInvocationException e)
+            {
+                throw e?.InnerException ?? e;
             }
         }
     }
