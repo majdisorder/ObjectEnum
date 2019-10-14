@@ -10,6 +10,11 @@ namespace System
     public abstract class ValueEnum<TEnum> : IEquatable<ValueEnum<TEnum>>
         where TEnum : struct
     {
+        private readonly TEnum value;
+        private int? hashCode;
+
+        #region ctors
+
         static ValueEnum()
         {
             if (!typeof(Enum).IsAssignableFrom(typeof(TEnum)))
@@ -38,9 +43,9 @@ namespace System
             this.value = value;
         }
 
-        private readonly TEnum value;
+        #endregion ctors
 
-        protected abstract IReadOnlyCollection<TEnum> GetDefinedValues();
+        #region private methods
 
         private bool IsTypeEquivalent(Type otherType)
         {
@@ -50,57 +55,6 @@ namespace System
                    (otherType.IsAssignableFrom(myType) ||
                     myType.IsAssignableFrom(otherType));
         }
-
-        public virtual bool IsDefined(TEnum size)
-            => GetDefinedValues().Contains(size);
-
-        public override string ToString()
-            => value.ToString();
-
-        public override bool Equals(object other)
-            => other is ValueEnum<TEnum> otherValueEnum &&
-               IsTypeEquivalent(other.GetType()) &&
-               value.Equals(otherValueEnum.value);
-
-        public bool Equals(ValueEnum<TEnum> other)
-            => Equals(other as object);
-
-        private int? hashCode;
-
-        [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
-        public override int GetHashCode()
-        {
-            if (hashCode.HasValue) return hashCode.Value;
-
-            unchecked
-            {
-                hashCode = 0;
-                hashCode = (hashCode * 397) ^ value.GetHashCode();
-                hashCode = (hashCode * 397) ^ GetType().GetHashCode();
-
-                return hashCode.Value;
-            }
-        }
-
-        public static bool operator ==(ValueEnum<TEnum> left, ValueEnum<TEnum> right)
-            => Equals(left, right);
-
-        public static bool operator !=(ValueEnum<TEnum> left, ValueEnum<TEnum> right)
-            => !Equals(left, right);
-
-        public static explicit operator int(ValueEnum<TEnum> x)
-            => (int) (x.value as object);
-
-        public static implicit operator TEnum(ValueEnum<TEnum> x)
-            => x.value;
-
-        public static bool TryParse<TConcrete>(string input, out TConcrete value)
-            where TConcrete : ValueEnum<TEnum>
-            => TryParse(input, false, out value);
-
-        public static bool TryParse<TConcrete>(string input, bool ignoreCase, out TConcrete value)
-            where TConcrete : ValueEnum<TEnum>
-            => TryParse(input, ignoreCase, out value, false);
 
         private static bool TryParse<TConcrete>(string input, bool ignoreCase, out TConcrete value, bool rethrow)
             where TConcrete : ValueEnum<TEnum>
@@ -131,6 +85,89 @@ namespace System
             return false;
         }
 
+        #endregion private methods
+
+        protected abstract IReadOnlyCollection<TEnum> GetDefinedValues();
+
+        public bool IsDefined(TEnum size)
+            => GetDefinedValues().Contains(size);
+
+        public static TConcrete NewValueEnum<TConcrete>(TEnum input)
+            where TConcrete : ValueEnum<TEnum>
+        {
+            try
+            {
+                return Activator.CreateInstance(
+                    typeof(TConcrete),
+                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
+                    null,
+                    new object[] {input},
+                    CultureInfo.InvariantCulture
+                ) as TConcrete;
+            }
+            catch (TargetInvocationException e)
+            {
+                throw e?.InnerException ?? e;
+            }
+        }
+
+        public override string ToString()
+            => value.ToString();
+
+        #region equality
+
+        public override bool Equals(object other)
+            => other is ValueEnum<TEnum> otherValueEnum &&
+               IsTypeEquivalent(other.GetType()) &&
+               value.Equals(otherValueEnum.value);
+
+        public bool Equals(ValueEnum<TEnum> other)
+            => Equals(other as object);
+
+
+        [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
+        public override int GetHashCode()
+        {
+            if (hashCode.HasValue) return hashCode.Value;
+
+            unchecked
+            {
+                hashCode = 0;
+                hashCode = (hashCode * 397) ^ value.GetHashCode();
+                hashCode = (hashCode * 397) ^ GetType().GetHashCode();
+
+                return hashCode.Value;
+            }
+        }
+
+        public static bool operator ==(ValueEnum<TEnum> left, ValueEnum<TEnum> right)
+            => Equals(left, right);
+
+        public static bool operator !=(ValueEnum<TEnum> left, ValueEnum<TEnum> right)
+            => !Equals(left, right);
+
+        #endregion equality
+
+        #region cast operators
+
+        public static explicit operator int(ValueEnum<TEnum> x)
+            => (int) (x.value as object);
+
+        public static implicit operator TEnum(ValueEnum<TEnum> x)
+            => x.value;
+
+        #endregion cast operators
+
+        #region parsing
+
+        public static bool TryParse<TConcrete>(string input, out TConcrete value)
+            where TConcrete : ValueEnum<TEnum>
+            => TryParse(input, false, out value);
+
+        public static bool TryParse<TConcrete>(string input, bool ignoreCase, out TConcrete value)
+            where TConcrete : ValueEnum<TEnum>
+            => TryParse(input, ignoreCase, out value, false);
+
         public static TConcrete Parse<TConcrete>(string input)
             where TConcrete : ValueEnum<TEnum>
         {
@@ -151,23 +188,6 @@ namespace System
             }
         }
 
-        public static TConcrete NewValueEnum<TConcrete>(TEnum input)
-            where TConcrete : ValueEnum<TEnum>
-        {
-            try
-            {
-                return Activator.CreateInstance(
-                    typeof(TConcrete),
-                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
-                    null,
-                    new object[] {input},
-                    CultureInfo.InvariantCulture
-                ) as TConcrete;
-            }
-            catch (TargetInvocationException e)
-            {
-                throw e?.InnerException ?? e;
-            }
-        }
+        #endregion parsing
     }
 }
