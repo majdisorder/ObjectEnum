@@ -1,5 +1,5 @@
-using System.ValueEnum.Tests.Models;
 using NUnit.Framework;
+using System.ValueEnum.Tests.Models;
 
 namespace System.ValueEnum.Tests
 {
@@ -37,7 +37,7 @@ namespace System.ValueEnum.Tests
         {
             var testValue = new FirstEnum(TestEnum.Value.First);
 
-            var result = (TestEnum.Value) testValue;
+            var result = (TestEnum.Value)testValue;
 
             Assert.IsInstanceOf<TestEnum.Value>(result);
         }
@@ -47,7 +47,7 @@ namespace System.ValueEnum.Tests
         {
             var testValue = new FirstEnum(TestEnum.Value.First);
 
-            var result = (TestEnum.Value) testValue;
+            var result = (TestEnum.Value)testValue;
 
             Assert.AreEqual(TestEnum.Value.First, result);
         }
@@ -57,7 +57,7 @@ namespace System.ValueEnum.Tests
         {
             var testValue = new FirstEnum(TestEnum.Value.First);
 
-            var result = (int) testValue;
+            var result = (int)testValue;
 
             Assert.IsInstanceOf<int>(result);
         }
@@ -67,9 +67,9 @@ namespace System.ValueEnum.Tests
         {
             var testValue = new FirstEnum(TestEnum.Value.First);
 
-            var result = (int) testValue;
+            var result = (int)testValue;
 
-            Assert.AreEqual((int) TestEnum.Value.First, result);
+            Assert.AreEqual((int)TestEnum.Value.First, result);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace System.ValueEnum.Tests
         {
             var testString = TestEnum.Value.First.ToString();
 
-            var result = (TestEnum.Value) FirstEnum.Parse<FirstEnum>(testString);
+            var result = (TestEnum.Value)FirstEnum.Parse<FirstEnum>(testString);
 
             Assert.AreEqual(
                 TestEnum.Value.First,
@@ -137,7 +137,7 @@ namespace System.ValueEnum.Tests
 
             Assert.AreEqual(
                 TestEnum.Value.First,
-                (TestEnum.Value) result
+                (TestEnum.Value)result
             );
         }
 
@@ -239,17 +239,17 @@ namespace System.ValueEnum.Tests
 
 
         //TODO: find a better way to calculate HashCode, keeping in mind different inheritance scenario's
-//        [Test]
-//        public void GetHashCode_ForDerivedTypeAndSameValue_ShouldBeEqual()
-//        {
-//            var testValue1 = new CombinedEnum(TestEnum.Value.First);
-//            var testValue2 = new DerivedCombinedEnum(TestEnum.Value.First);
-//
-//            var result1 = testValue1.GetHashCode();
-//            var result2 = testValue2.GetHashCode();
-//
-//            Assert.AreEqual(result1, result2);
-//        }
+        //        [Test]
+        //        public void GetHashCode_ForDerivedTypeAndSameValue_ShouldBeEqual()
+        //        {
+        //            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+        //            var testValue2 = new DerivedCombinedEnum(TestEnum.Value.First);
+        //
+        //            var result1 = testValue1.GetHashCode();
+        //            var result2 = testValue2.GetHashCode();
+        //
+        //            Assert.AreEqual(result1, result2);
+        //        }
 
         [Test]
         public void GetHashCode_ForDifferentTypeAndDifferentValue_ShouldNotBeEqual()
@@ -354,7 +354,7 @@ namespace System.ValueEnum.Tests
         [Test]
         public void NewValueEnum_WithValidEnumValue_ShouldReturnInstanceOfSpecifiedType()
         {
-            var testValue = SelfContainedEnum.NewValueEnum<SelfContainedEnum>(TestEnum.Value.First);
+            var testValue = SelfContainedEnum.Create<SelfContainedEnum>(TestEnum.Value.First);
 
             Assert.IsInstanceOf<SelfContainedEnum>(testValue);
         }
@@ -365,9 +365,148 @@ namespace System.ValueEnum.Tests
             Assert.Throws<TypeInitializationException>(
                 () =>
                 {
-                    var testValue = SelfContainedEnum.NewValueEnum<SelfContainedEnum>(TestEnum.Value.Second);
+                    var testValue = SelfContainedEnum.Create<SelfContainedEnum>(TestEnum.Value.Second);
                 }
             );
+        }
+
+        [Test]
+        public void IsDefined_WithValidEnumValue_ShouldReturnTrue()
+        {
+            var testValue = new FirstEnum(TestEnum.Value.First);
+
+            var result = testValue.IsDefined(TestEnum.Value.First);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void IsDefined_WithInvalidEnumValue_ShouldReturnFalse()
+        {
+            var testValue = new FirstEnum(TestEnum.Value.First);
+
+            var result = testValue.IsDefined(TestEnum.Value.Second);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void IsDefined_WithValidIntegerValue_ShouldReturnTrue()
+        {
+            var testValue = new FirstEnum(TestEnum.Value.First);
+
+            var result = testValue.IsDefined((int)TestEnum.Value.First);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void IsDefined_WithInvalidIntegerValue_ShouldReturnFalse()
+        {
+            var testValue = new FirstEnum(TestEnum.Value.First);
+
+            var result = testValue.IsDefined((int)TestEnum.Value.Second);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void IsDefined_WithValidEnumAsObjectValue_ShouldReturnTrue()
+        {
+            var testValue = new FirstEnum(TestEnum.Value.First);
+            var testObject = (object)TestEnum.Value.First;
+
+            var result = testValue.IsDefined(testObject);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void IsDefined_WithInvalidEnumAsObjectValue_ShouldReturnFalse()
+        {
+            var testValue = new FirstEnum(TestEnum.Value.First);
+            var testObject = (object)TestEnum.Value.Second;
+
+            var result = testValue.IsDefined(testObject);
+
+            Assert.IsFalse(result);
+        }
+
+
+        [Test]
+        public void IsDefined_WithValidValueEnumAsObjectValue_ShouldReturnTrue()
+        {
+            var testValue = new FirstEnum(TestEnum.Value.First);
+            var testObject = (object)new FirstEnum(TestEnum.Value.First);
+
+            var result = testValue.IsDefined(testObject);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void IsDefined_WithValidValueEnumValue_ShouldReturnTrue()
+        {
+            var testValue = new FirstEnum(TestEnum.Value.First);
+            var testObject = new FirstEnum(TestEnum.Value.First);
+
+            var result = testValue.IsDefined(testObject);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void IsDefined_WithDifferentEnumValueTypeAndValidUnderlyingValue_ShouldReturnFalse()
+        {
+            var testValue = new FirstEnum(TestEnum.Value.First);
+            var testObject = new CombinedEnum(TestEnum.Value.Unknown); ;
+
+            var result = testValue.IsDefined(testObject);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void IsDefined_WithDerivedEnumValueTypeAndValidUnderlyingValue_ShouldReturnTrue()
+        {
+            var testValue = new CombinedEnum(TestEnum.Value.First);
+            var testObject = new DerivedCombinedEnum(TestEnum.Value.First);
+
+            var result = testValue.IsDefined(testObject);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void IsDefined_WithDerivedEnumValueTypeAndInvalidUnderlyingValue_ShouldReturnFalse()
+        {
+            var testValue = new CombinedEnum(TestEnum.Value.First);
+            var testObject = new DerivedCombinedEnum(TestEnum.Value.Third); ;
+
+            var result = testValue.IsDefined(testObject);
+
+            Assert.IsFalse(result);
+        }
+
+
+        [Test]
+        public void IsDefined_WitNullAsObject_ShouldReturnFalse()
+        {
+            var testValue = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue.IsDefined((object)null);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void IsDefined_WitNullAsEnumtValue_ShouldReturnFalse()
+        {
+            var testValue = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue.IsDefined((object)null);
+
+            Assert.IsFalse(result);
         }
     }
 }
