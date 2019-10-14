@@ -66,7 +66,7 @@ namespace System
                     if (!Enum.TryParse<TEnum>(input, ignoreCase, out var enumVal))
                         throw new FormatException("Input string was not in a correct format");
 
-                    value = NewValueEnum<TConcrete>(enumVal);
+                    value = Create<TConcrete>(enumVal);
 
                     return true;
                 }
@@ -111,7 +111,7 @@ namespace System
         /// <exception cref="TypeInitializationException"></exception>
         /// <exception cref="TargetInvocationException"></exception>
         /// <exception cref="Exception"></exception>
-        public static TConcrete NewValueEnum<TConcrete>(TEnum value)
+        public static TConcrete Create<TConcrete>(TEnum value)
             where TConcrete : ValueEnum<TEnum>
         {
             try
