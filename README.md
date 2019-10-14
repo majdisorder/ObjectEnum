@@ -146,7 +146,7 @@ public abstract class Size : ValueEnum<Size.Value>
         : base(value) { }
 }
 
- public class BasicSize : Size
+public class BasicSize : Size
 {
     public BasicSize(Value value)
         : base(value) { }
