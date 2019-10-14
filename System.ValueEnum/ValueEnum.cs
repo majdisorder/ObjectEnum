@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -23,10 +25,13 @@ namespace System
         {
             if (!IsDefined(value))
             {
-                throw new ArgumentOutOfRangeException(
-                    nameof(value),
-                    value,
-                    $"The provided value is not defined for this {nameof(ValueEnum<TEnum>)}"
+                throw new TypeInitializationException(
+                    nameof(ValueEnum<TEnum>),
+                    new ArgumentOutOfRangeException(
+                        nameof(value),
+                        value,
+                        $"The provided value is not defined for this {nameof(ValueEnum<TEnum>)}"
+                    )
                 );
             }
 
@@ -58,14 +63,24 @@ namespace System
                value.Equals(otherValueEnum.value);
 
         public bool Equals(ValueEnum<TEnum> other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return value.Equals(other.value);
-        }
+            => Equals(other as object);
 
+        private int? hashCode;
+
+        [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
         public override int GetHashCode()
-            => value.GetHashCode();
+        {
+            if (hashCode.HasValue) return hashCode.Value;
+
+            unchecked
+            {
+                hashCode = 0;
+                hashCode = (hashCode * 397) ^ value.GetHashCode();
+                hashCode = (hashCode * 397) ^ GetType().GetHashCode();
+
+                return hashCode.Value;
+            }
+        }
 
         public static bool operator ==(ValueEnum<TEnum> left, ValueEnum<TEnum> right)
             => Equals(left, right);
@@ -74,7 +89,7 @@ namespace System
             => !Equals(left, right);
 
         public static explicit operator int(ValueEnum<TEnum> x)
-            => (int)(x.value as object);
+            => (int) (x.value as object);
 
         public static implicit operator TEnum(ValueEnum<TEnum> x)
             => x.value;
@@ -94,23 +109,24 @@ namespace System
             {
                 try
                 {
-                    if (Enum.TryParse<TEnum>(input, ignoreCase, out var enumVal))
-                    {
-                        value = Activator.CreateInstance(
-                            typeof(TConcrete),
-                            BindingFlags.CreateInstance | BindingFlags.NonPublic,
-                            null,
-                            new object[] { enumVal },
-                            CultureInfo.InvariantCulture
-                        ) as TConcrete;
+                    if (!Enum.TryParse<TEnum>(input, ignoreCase, out var enumVal))
+                        throw new FormatException("Input string was not in a correct format");
 
-                        return true;
-                    }
+                    value = Activator.CreateInstance(
+                        typeof(TConcrete),
+                        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
+                        null,
+                        new object[] {enumVal},
+                        CultureInfo.InvariantCulture
+                    ) as TConcrete;
+
+                    return true;
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug
-                        .Write($"{nameof(ValueEnum<TEnum>)}.{nameof(TryParse)} failed with: {ex.Message}. Safe to ignore.");
+                        .Write(
+                            $"{nameof(ValueEnum<TEnum>)}.{nameof(TryParse)} failed with: {ex.Message}. Safe to ignore.");
 
                     if (rethrow) throw;
                 }
@@ -126,9 +142,11 @@ namespace System
         {
             try
             {
-                return TryParse<TConcrete>(input, true, out var value, true) ?
-                    value :
-                    default;
+                return TryParse<TConcrete>(input, true, out var value, true) ? value : default;
+            }
+            catch (FormatException ex)
+            {
+                throw;
             }
             catch (Exception ex)
             {
