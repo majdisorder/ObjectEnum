@@ -10,7 +10,7 @@ namespace System
     public abstract class ValueEnum<TEnum> : IEquatable<ValueEnum<TEnum>>
         where TEnum : struct
     {
-        private readonly TEnum value;
+        private readonly TEnum _value;
         private int? hashCode;
 
         #region ctors
@@ -40,7 +40,7 @@ namespace System
                 );
             }
 
-            this.value = value;
+            this._value = value;
         }
 
         #endregion ctors
@@ -87,12 +87,31 @@ namespace System
 
         #endregion private methods
 
+        /// <summary>
+        /// Gets an immutable list of <c>Enum</c> values supported by this type.
+        /// The result of this call is used by <see cref="IsDefined"/>.
+        /// </summary>
+        /// <returns>An immutable list of <c>Enum</c> values supported by this type.</returns>
         protected abstract IReadOnlyCollection<TEnum> GetDefinedValues();
 
-        public bool IsDefined(TEnum size)
-            => GetDefinedValues().Contains(size);
+        /// <summary>
+        /// Indicates whether a specified value exists for this <see cref="ValueEnum&lt;TEnum&gt;"/>.
+        /// </summary>
+        /// <param name="value">The value to check.</param>
+        /// <returns><see langword="true" /> if <paramref name="value" />is defined; otherwise, <see langword="false" />.</returns>
+        public bool IsDefined(TEnum value)
+            => GetDefinedValues().Contains(value); 
 
-        public static TConcrete NewValueEnum<TConcrete>(TEnum input)
+        /// <summary>
+        /// Creates a new <see cref="ValueEnum&lt;TEnum&gt;"/> instance of the given concrete type.
+        /// </summary>
+        /// <param name="value">Underlying enum value.</param>
+        /// <typeparam name="TConcrete">Type of the concrete <see cref="ValueEnum&lt;TEnum&gt;"/> implementation.</typeparam>
+        /// <returns>A new instance of <see cref="TConcrete"/> with underlying enum value of <see cref="TEnum"/>.</returns>
+        /// <exception cref="TypeInitializationException"></exception>
+        /// <exception cref="TargetInvocationException"></exception>
+        /// <exception cref="Exception"></exception>
+        public static TConcrete NewValueEnum<TConcrete>(TEnum value)
             where TConcrete : ValueEnum<TEnum>
         {
             try
@@ -101,7 +120,7 @@ namespace System
                     typeof(TConcrete),
                     BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
                     null,
-                    new object[] {input},
+                    new object[] {value},
                     CultureInfo.InvariantCulture
                 ) as TConcrete;
             }
@@ -112,18 +131,17 @@ namespace System
         }
 
         public override string ToString()
-            => value.ToString();
+            => _value.ToString();
 
         #region equality
 
         public override bool Equals(object other)
             => other is ValueEnum<TEnum> otherValueEnum &&
                IsTypeEquivalent(other.GetType()) &&
-               value.Equals(otherValueEnum.value);
+               _value.Equals(otherValueEnum._value);
 
         public bool Equals(ValueEnum<TEnum> other)
             => Equals(other as object);
-
 
         [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
         public override int GetHashCode()
@@ -133,7 +151,7 @@ namespace System
             unchecked
             {
                 hashCode = 0;
-                hashCode = (hashCode * 397) ^ value.GetHashCode();
+                hashCode = (hashCode * 397) ^ _value.GetHashCode();
                 hashCode = (hashCode * 397) ^ GetType().GetHashCode();
 
                 return hashCode.Value;
@@ -151,23 +169,53 @@ namespace System
         #region cast operators
 
         public static explicit operator int(ValueEnum<TEnum> x)
-            => (int) (x.value as object);
+            => (int) (x._value as object);
 
         public static implicit operator TEnum(ValueEnum<TEnum> x)
-            => x.value;
+            => x._value;
 
         #endregion cast operators
 
         #region parsing
 
-        public static bool TryParse<TConcrete>(string input, out TConcrete value)
+        /// <summary>
+        /// Converts the string representation of an enum to its <see cref="ValueEnum&lt;TEnum&gt;"/> equivalent. A return value indicates whether the conversion succeeded.
+        /// </summary>
+        /// <param name="input">A case-sensitive string containing a value to convert.</param>
+        /// <param name="result">
+        /// When this method returns, contains the <see cref="ValueEnum&lt;TEnum&gt;"/> equivalent of the value contained in <paramref name="input" />, if the conversion succeeded, or null if the conversion failed.
+        /// The conversion fails if the <paramref name="input" /> parameter is <see langword="null" /> or <see cref="F:System.String.Empty" />, or is not of the correct format.
+        /// This parameter is passed uninitialized; any value originally supplied in <paramref name="result" /> will be overwritten.
+        /// </param>
+        /// <typeparam name="TConcrete">Type of the concrete <see cref="ValueEnum&lt;TEnum&gt;"/> implementation.</typeparam>
+        /// <returns><see langword="true" /> if <paramref name="input" /> was converted successfully; otherwise, <see langword="false" />.</returns>
+        public static bool TryParse<TConcrete>(string input, out TConcrete result)
             where TConcrete : ValueEnum<TEnum>
-            => TryParse(input, false, out value);
+            => TryParse(input, false, out result);
 
-        public static bool TryParse<TConcrete>(string input, bool ignoreCase, out TConcrete value)
+        /// <summary>
+        /// Converts the string representation of an enum to its <see cref="ValueEnum&lt;TEnum&gt;"/> equivalent. A parameter specifies whether the operation is case-sensitive.  A return value indicates whether the conversion succeeded.
+        /// </summary>
+        /// <param name="input">A string containing a value to convert.</param>
+        /// <param name="ignoreCase" />
+        /// <param name="result">
+        /// When this method returns, contains the <see cref="ValueEnum&lt;TEnum&gt;"/> equivalent of the value contained in <paramref name="input" />, if the conversion succeeded, or null if the conversion failed.
+        /// The conversion fails if the <paramref name="input" /> parameter is <see langword="null" /> or <see cref="F:System.String.Empty" />, or is not of the correct format.
+        /// This parameter is passed uninitialized; any value originally supplied in <paramref name="result" /> will be overwritten.
+        /// </param>
+        /// <typeparam name="TConcrete">Type of the concrete <see cref="ValueEnum&lt;TEnum&gt;"/> implementation.</typeparam>
+        /// <returns><see langword="true" /> if <paramref name="input" /> was converted successfully; otherwise, <see langword="false" />.</returns>
+        public static bool TryParse<TConcrete>(string input, bool ignoreCase, out TConcrete result)
             where TConcrete : ValueEnum<TEnum>
-            => TryParse(input, ignoreCase, out value, false);
+            => TryParse(input, ignoreCase, out result, false);
 
+        /// <summary>
+        /// Converts the string representation of an enum to its <see cref="ValueEnum&lt;TEnum&gt;"/> equivalent.
+        /// </summary>
+        /// <param name="input">A case-sensitive string containing a value to convert.</param>
+        /// <typeparam name="TConcrete">Type of the concrete <see cref="ValueEnum&lt;TEnum&gt;"/> implementation.</typeparam>
+        /// <returns>The <see cref="ValueEnum&lt;TEnum&gt;"/> equivalent of the value contained in <paramref name="input" /></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public static TConcrete Parse<TConcrete>(string input)
             where TConcrete : ValueEnum<TEnum>
         {
@@ -175,7 +223,7 @@ namespace System
             {
                 return TryParse<TConcrete>(input, true, out var value, true) ? value : default;
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 throw;
             }
