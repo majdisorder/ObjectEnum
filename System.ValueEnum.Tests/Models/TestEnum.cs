@@ -36,6 +36,20 @@ namespace System.ValueEnum.Tests.Models
         {
         }
     }
+    
+    [ExcludeFromCodeCoverage]
+    internal class SelfContainedEnum : TestEnum
+    {
+        protected SelfContainedEnum(Value value)
+            : base(value)
+        {
+        }
+
+        private static readonly IReadOnlyCollection<Value> Values = new[] {Value.Unknown, Value.First};
+
+        protected override IReadOnlyCollection<Value> GetDefinedValues()
+            => Values;
+    }
 
     [ExcludeFromCodeCoverage]
     internal class FirstEnum : TestEnum

@@ -13,23 +13,23 @@ namespace System.ValueEnum.Tests
         [Test]
         public void Initialize_WithNonEnumTypeParameter_ShouldThrowTypeInitializationException()
         {
-            Assert.Throws(
-                typeof(TypeInitializationException),
+            Assert.Throws<TypeInitializationException>(
                 () =>
                 {
                     var a = new InvalidEnum(1);
-                });
+                }
+            );
         }
 
         [Test]
         public void Initialize_WithOuOfRangeEnumValueArgument_ShouldThrowTypeInitializationException()
         {
-            Assert.Throws(
-                typeof(TypeInitializationException),
+            Assert.Throws<TypeInitializationException>(
                 () =>
                 {
                     var a = new FirstEnum(TestEnum.Value.Second);
-                });
+                }
+            );
         }
 
         [Test]
@@ -99,8 +99,7 @@ namespace System.ValueEnum.Tests
         [Test]
         public void Parse_WithInvalidName_ShouldThrowFormatException()
         {
-            Assert.Throws(
-                typeof(FormatException),
+            Assert.Throws<FormatException>(
                 () =>
                 {
                     var result = FirstEnum.Parse<FirstEnum>("SomeString");
@@ -111,8 +110,7 @@ namespace System.ValueEnum.Tests
         [Test]
         public void Parse_WithValidNameButUndefined_ShouldThrowInvalidOperationException()
         {
-            Assert.Throws(
-                typeof(InvalidOperationException),
+            Assert.Throws<InvalidOperationException>(
                 () =>
                 {
                     var result = FirstEnum.Parse<FirstEnum>(TestEnum.Value.Second.ToString());
@@ -321,7 +319,7 @@ namespace System.ValueEnum.Tests
 
             Assert.AreNotEqual(testValue1, testValue2);
         }
-        
+
         [Test]
         public void Equals_TwoObjectsOfDerivedClassWithDifferentUnderlyingValue_ShouldNotBeEqual()
         {
@@ -351,6 +349,25 @@ namespace System.ValueEnum.Tests
             var result = testValue1 != testValue2;
 
             Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void NewValueEnum_WithValidEnumValue_ShouldReturnInstanceOfSpecifiedType()
+        {
+            var testValue = SelfContainedEnum.NewValueEnum<SelfContainedEnum>(TestEnum.Value.First);
+
+            Assert.IsInstanceOf<SelfContainedEnum>(testValue);
+        }
+
+        [Test]
+        public void NewValueEnum_WithInValidEnumValue_ShouldThrowTypeInitializationException()
+        {
+            Assert.Throws<TypeInitializationException>(
+                () =>
+                {
+                    var testValue = SelfContainedEnum.NewValueEnum<SelfContainedEnum>(TestEnum.Value.Second);
+                }
+            );
         }
     }
 }
