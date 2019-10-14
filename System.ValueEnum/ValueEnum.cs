@@ -100,8 +100,37 @@ namespace System
         /// <param name="value">The value to check.</param>
         /// <returns><see langword="true" /> if <paramref name="value" />is defined; otherwise, <see langword="false" />.</returns>
         public bool IsDefined(TEnum value)
-            => GetDefinedValues().Contains(value); 
+            => GetDefinedValues().Contains(value);
 
+        /// <summary>
+        /// Indicates whether a specified value exists for this <see cref="ValueEnum&lt;TEnum&gt;"/>.
+        /// </summary>
+        /// <param name="value">The value to check.</param>
+        /// <returns><see langword="true" /> if <paramref name="value" />is defined; otherwise, <see langword="false" />.</returns>
+        public bool IsDefined(object value)
+        {
+            switch (value)
+            {
+                case null:
+                    return false;
+                case ValueEnum<TEnum> valueEnumValue:
+                    return IsDefined(valueEnumValue);
+                default:
+                    return Enum.IsDefined(typeof(TEnum), value) &&
+                           IsDefined((TEnum) value);
+            }
+        }
+        
+        /// <summary>
+        /// Indicates whether a specified value exists for this <see cref="ValueEnum&lt;TEnum&gt;"/>.
+        /// </summary>
+        /// <param name="value">The value to check.</param>
+        /// <returns><see langword="true" /> if <paramref name="value" />is defined and the <c>Type</c> of <paramref name="value"/>is equivalent; otherwise, <see langword="false" />.</returns>
+        public bool IsDefined(ValueEnum<TEnum> value)
+            => value != null &&
+               IsTypeEquivalent(value.GetType()) &&
+               IsDefined((TEnum) value);
+        
         /// <summary>
         /// Creates a new <see cref="ValueEnum&lt;TEnum&gt;"/> instance of the given concrete type.
         /// </summary>
