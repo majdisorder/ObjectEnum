@@ -1,5 +1,8 @@
 ﻿using Sample.Models;
 using System;
+using System.Diagnostics.CodeAnalysis;
+
+[assembly: ExcludeFromCodeCoverage]
 
 namespace Sample
 {
@@ -29,6 +32,44 @@ namespace Sample
             var monday = new WeekDay(DayOfWeek.Monday);
             Console.WriteLine(monday == DayOfWeek.Monday ? "OK" : "FAIL");
 
+            //compare 
+            var friday = new WeekDay(DayOfWeek.Friday);
+
+            Console.WriteLine();
+            Console.WriteLine("Compare: less than");
+            Console.WriteLine($"{monday} < {nameof(WeekDay)}.{DayOfWeek.Friday} = {monday < friday}");
+            Console.WriteLine($"{monday} < {nameof(DayOfWeek)}.{DayOfWeek.Friday} = {monday < DayOfWeek.Friday}");
+            Console.WriteLine($"{friday} < {nameof(WeekDay)}.{DayOfWeek.Monday} = {friday < monday}");
+            Console.WriteLine($"{friday} < {nameof(DayOfWeek)}.{DayOfWeek.Monday} = {friday < DayOfWeek.Monday}");
+            Console.WriteLine($"{monday} < {nameof(WeekDay)}.{DayOfWeek.Monday} = {monday < monday}");
+            Console.WriteLine($"{monday} < {nameof(DayOfWeek)}.{DayOfWeek.Monday} = {monday < DayOfWeek.Monday}");
+
+            Console.WriteLine();
+            Console.WriteLine("Compare: greater than");
+            Console.WriteLine($"{monday} > {nameof(WeekDay)}.{DayOfWeek.Friday} = {monday > friday}");
+            Console.WriteLine($"{monday} > {nameof(DayOfWeek)}.{DayOfWeek.Friday} = {monday > DayOfWeek.Friday}");
+            Console.WriteLine($"{friday} > {nameof(WeekDay)}.{DayOfWeek.Monday} = {friday > monday}");
+            Console.WriteLine($"{friday} > {nameof(DayOfWeek)}.{DayOfWeek.Monday} = {friday > DayOfWeek.Monday}");
+            Console.WriteLine($"{monday} > {nameof(WeekDay)}.{DayOfWeek.Monday} = {monday > monday}");
+            Console.WriteLine($"{monday} > {nameof(DayOfWeek)}.{DayOfWeek.Monday} = {monday > DayOfWeek.Monday}");
+
+            Console.WriteLine();
+            Console.WriteLine("Compare: less than or equal");
+            Console.WriteLine($"{monday} <= {nameof(WeekDay)}.{DayOfWeek.Friday} = {monday <= friday}");
+            Console.WriteLine($"{monday} <= {nameof(DayOfWeek)}.{DayOfWeek.Friday} = {monday <= DayOfWeek.Friday}");
+            Console.WriteLine($"{friday} <= {nameof(WeekDay)}.{DayOfWeek.Monday} = {friday <= monday}");
+            Console.WriteLine($"{friday} <= {nameof(DayOfWeek)}.{DayOfWeek.Monday} = {friday <= DayOfWeek.Monday}");
+            Console.WriteLine($"{monday} <= {nameof(WeekDay)}.{DayOfWeek.Monday} = {monday <= monday}");
+            Console.WriteLine($"{monday} <= {nameof(DayOfWeek)}.{DayOfWeek.Monday} = {monday <= DayOfWeek.Monday}");
+           
+            Console.WriteLine();
+            Console.WriteLine("Compare: greater than or equal");
+            Console.WriteLine($"{monday} >= {nameof(WeekDay)}.{DayOfWeek.Friday} = {monday >= friday}");
+            Console.WriteLine($"{monday} >= {nameof(DayOfWeek)}.{DayOfWeek.Friday} = {monday >= DayOfWeek.Friday}");
+            Console.WriteLine($"{friday} >= {nameof(WeekDay)}.{DayOfWeek.Monday} = {friday >= monday}");
+            Console.WriteLine($"{friday} >= {nameof(DayOfWeek)}.{DayOfWeek.Monday} = {friday >= DayOfWeek.Monday}");
+            Console.WriteLine($"{monday} >= {nameof(WeekDay)}.{DayOfWeek.Monday} = {monday >= monday}");
+            Console.WriteLine($"{monday} >= {nameof(DayOfWeek)}.{DayOfWeek.Monday} = {monday >= DayOfWeek.Monday}");
 
             //custom enums
             //initializing with an invalid enum value won't work
