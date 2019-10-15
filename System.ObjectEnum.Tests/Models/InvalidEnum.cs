@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace System.ValueEnum.Tests.Models
+namespace System.ObjectEnum.Tests.Models
 {
     [ExcludeFromCodeCoverage]
-    internal class InvalidEnum : ValueEnum<int>
+    internal class InvalidEnum : ObjectEnum<int>
     {
         public InvalidEnum(int value)
             : base(value) { }

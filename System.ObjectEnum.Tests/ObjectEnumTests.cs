@@ -1,9 +1,9 @@
 using NUnit.Framework;
-using System.ValueEnum.Tests.Models;
+using System.ObjectEnum.Tests.Models;
 
-namespace System.ValueEnum.Tests
+namespace System.ObjectEnum.Tests
 {
-    public class ValueEnumTests
+    public class ObjectEnumTests
     {
         [SetUp]
         public void Setup()
@@ -84,7 +84,7 @@ namespace System.ValueEnum.Tests
         }
 
         [Test]
-        public void Parse_WithValidName_ShouldReturnValueEnumWithCorrespondingValue()
+        public void Parse_WithValidName_ShouldReturnObjectEnumWithCorrespondingValue()
         {
             var testString = TestEnum.Value.First.ToString();
 
@@ -129,7 +129,7 @@ namespace System.ValueEnum.Tests
         }
 
         [Test]
-        public void TryParse_WithValidName_ShouldSetOutValueEnumWithCorrespondingValue()
+        public void TryParse_WithValidName_ShouldSetOutObjectEnumWithCorrespondingValue()
         {
             var testString = TestEnum.Value.First.ToString();
 
@@ -172,7 +172,7 @@ namespace System.ValueEnum.Tests
         }
 
         [Test]
-        public void TryParse_WithInvalidName_ShouldSetOutValueEnumWithDefault()
+        public void TryParse_WithInvalidName_ShouldSetOutObjectEnumWithDefault()
         {
             var testString = "SomeString";
 
@@ -192,7 +192,7 @@ namespace System.ValueEnum.Tests
         }
 
         [Test]
-        public void TryParse_WithValidNameButUndefined_ShouldSetOutValueEnumWithDefault()
+        public void TryParse_WithValidNameButUndefined_ShouldSetOutObjectEnumWithDefault()
         {
             var testString = TestEnum.Value.Second.ToString();
 
@@ -352,7 +352,7 @@ namespace System.ValueEnum.Tests
         }
 
         [Test]
-        public void NewValueEnum_WithValidEnumValue_ShouldReturnInstanceOfSpecifiedType()
+        public void NewObjectEnum_WithValidEnumValue_ShouldReturnInstanceOfSpecifiedType()
         {
             var testValue = SelfContainedEnum.Create<SelfContainedEnum>(TestEnum.Value.First);
 
@@ -360,7 +360,7 @@ namespace System.ValueEnum.Tests
         }
 
         [Test]
-        public void NewValueEnum_WithInValidEnumValue_ShouldThrowTypeInitializationException()
+        public void NewObjectEnum_WithInValidEnumValue_ShouldThrowTypeInitializationException()
         {
             Assert.Throws<TypeInitializationException>(
                 () =>
@@ -434,7 +434,7 @@ namespace System.ValueEnum.Tests
 
 
         [Test]
-        public void IsDefined_WithValidValueEnumAsObjectValue_ShouldReturnTrue()
+        public void IsDefined_WithValidObjectEnumAsObjectValue_ShouldReturnTrue()
         {
             var testValue = new FirstEnum(TestEnum.Value.First);
             var testObject = (object)new FirstEnum(TestEnum.Value.First);
@@ -445,7 +445,7 @@ namespace System.ValueEnum.Tests
         }
 
         [Test]
-        public void IsDefined_WithValidValueEnumValue_ShouldReturnTrue()
+        public void IsDefined_WithValidObjectEnumValue_ShouldReturnTrue()
         {
             var testValue = new FirstEnum(TestEnum.Value.First);
             var testObject = new FirstEnum(TestEnum.Value.First);
