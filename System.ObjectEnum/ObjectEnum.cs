@@ -29,12 +29,13 @@ namespace System
         {
             if (!IsDefined(value))
             {
+                var type = GetType();
                 throw new TypeInitializationException(
-                    nameof(ObjectEnum<TEnum>),
+                    type.FullName,
                     new ArgumentOutOfRangeException(
                         nameof(value),
                         value,
-                        $"The provided value is not defined for this {nameof(ObjectEnum<TEnum>)}"
+                        $"The provided value '{value}' is not defined for {type.Name}"
                     )
                 );
             }
