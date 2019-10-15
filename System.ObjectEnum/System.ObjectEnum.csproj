@@ -5,13 +5,13 @@
     <RootNamespace>System</RootNamespace>
     <Version>1.0.0-alpha</Version>
     <Authors>Dimitri Troncquo</Authors>
-    <Description>ObjectEnum brings the magic of polymorphism to enums</Description>
+    <Description>ObjectEnum is a wrapper for enums, adding a certain degree of polymorphism.</Description>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReleaseNotes>This first version was hacked together in a few hours because I couldn't quite find an elegant solution for polymorphic enums on the net. Things got out of hand, and I ended up with a pretty feature complete package, so here you go.
 
-Please keep in mind that this solution has not been field tested, and quite frankly, I'm a bit drunk. Please refer to the GitHub repo for any issues, comments  or requests.</PackageReleaseNotes>
+Please keep in mind that this solution has not been field tested, and quite frankly, I was a bit drunk when I wrote it. Please refer to the GitHub repo for documentation as well as any issues, comments  or requests.</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
