@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sample.Models
 {
-    public class WeekDay : ValueEnum<DayOfWeek>
+    public class WeekDay : ObjectEnum<DayOfWeek>
     {
         public WeekDay(DayOfWeek value)
             : base(value) { }

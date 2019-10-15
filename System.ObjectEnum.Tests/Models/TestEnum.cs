@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace System.ValueEnum.Tests.Models
+namespace System.ObjectEnum.Tests.Models
 {
     [ExcludeFromCodeCoverage]
-    internal abstract class TestEnum : ValueEnum<TestEnum.Value>
+    internal abstract class TestEnum : ObjectEnum<TestEnum.Value>
     {
         public enum Value
         {
@@ -21,7 +21,7 @@ namespace System.ValueEnum.Tests.Models
     }
 
     [ExcludeFromCodeCoverage]
-    internal abstract class AltTestEnum : ValueEnum<AltTestEnum.Value>
+    internal abstract class AltTestEnum : ObjectEnum<AltTestEnum.Value>
     {
         public enum Value
         {

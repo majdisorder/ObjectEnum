@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\System.ValueEnum\System.ValueEnum.csproj" />
+    <ProjectReference Include="..\System.ObjectEnum\System.ObjectEnum.csproj" />
   </ItemGroup>
 
 </Project>

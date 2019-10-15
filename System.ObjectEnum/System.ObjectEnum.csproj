@@ -5,7 +5,7 @@
     <RootNamespace>System</RootNamespace>
     <Version>1.0.0-alpha</Version>
     <Authors>Dimitri Troncquo</Authors>
-    <Description>ValueEnum brings the magic of polymorphism to enums</Description>
+    <Description>ObjectEnum brings the magic of polymorphism to enums</Description>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
