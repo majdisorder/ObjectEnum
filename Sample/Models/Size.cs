@@ -2,7 +2,7 @@
 
 namespace Sample.Models
 {
-    public abstract class Size : ValueEnum<Size.Value>
+    public abstract class Size : ObjectEnum<Size.Value>
     {
         public enum Value
         {

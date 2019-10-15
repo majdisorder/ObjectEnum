@@ -1,6 +1,6 @@
-# ValueEnum
+# ObjectEnum
 
-ValueEnum is a wrapper for enums, adding a certain degree of polymorphism.
+ObjectEnum is a wrapper for enums, adding a certain degree of polymorphism.
 
 ## Examples
 
@@ -9,7 +9,7 @@ ValueEnum is a wrapper for enums, adding a certain degree of polymorphism.
 Conssider the WorkDay class:
 
 ```csharp
-public class WorkDay : ValueEnum<DayOfWeek>
+public class WorkDay : ObjectEnum<DayOfWeek>
 {
     public WorkDay(DayOfWeek value)
         : base(value) { }
@@ -41,7 +41,7 @@ var mondayIsAlwaysMonday = monday == DayOfWeek.Monday; //true, sorry...
 Conssider these classes:
 
 ```csharp
-public class ChillDay : ValueEnum<DayOfWeek>
+public class ChillDay : ObjectEnum<DayOfWeek>
 {
     public ChillDay(DayOfWeek value)
         : base(value) { }
@@ -90,7 +90,7 @@ var workFridayIsNoFunFriday = friday == funday; //false
 
 ### Switch cases
 
-You can easily use a ValueEnum in a switch case, however you will need to cast it to the appropriate enum.
+You can easily use a ObjectEnum in a switch case, however you will need to cast it to the appropriate enum.
 
 ```csharp
 var friday = new WorkDay(DayOfWeek.Friday);
@@ -122,12 +122,12 @@ switch((int)friday){
 }
 ```
 
-### Declaring your own ValueEnums
+### Declaring your own ObjectEnums
 
 ```csharp
 
 //you can optionally declare an abstract base type for your implementations
-public abstract class Size : ValueEnum<Size.Value>
+public abstract class Size : ObjectEnum<Size.Value>
 {
     //define a single enum containing all possible values
     //it can be a nested enum like it is here,
@@ -180,9 +180,9 @@ public class ExtendedSize : BasicSize
 
 ### Other helpful stuff
 
-As you may have noticed, it is easy to cast between a ValueEnum and its underlying enum Type, as well as casting to the int representation.
+As you may have noticed, it is easy to cast between a ObjectEnum and its underlying enum Type, as well as casting to the int representation.
 
-Besides this, a number of helper methods are defined to help you instantiate ValueEnums
+Besides this, a number of helper methods are defined to help you instantiate ObjectEnums
 
 ```csharp
 var isFriday = WorkDay.TryParse("Friday", out var friday); //returns true, friday = new WorkDay(DayOfWeek.Friday)
@@ -191,4 +191,4 @@ var tuesday =  WorkDay.Parse<WorkDay>("tuesday"); //returns new WorkDay(DayOfWee
 var wednessday = WorkDay.Create<WorkDay>(DayOfWeek.Wednessday);  //returns new WorkDay(DayOfWeek.Wednessday)
 ```
 
-You can also use the various overloads of `IsDefined` to determine whether a certain value is valid for the given ValueEnum.
+You can also use the various overloads of `IsDefined` to determine whether a certain value is valid for the given ObjectEnum.
