@@ -1,5 +1,8 @@
 using NUnit.Framework;
+using System.Diagnostics.CodeAnalysis;
 using System.ObjectEnum.Tests.Models;
+
+[assembly: ExcludeFromCodeCoverage]
 
 namespace System.ObjectEnum.Tests
 {
@@ -507,6 +510,510 @@ namespace System.ObjectEnum.Tests
             var result = testValue.IsDefined((object)null);
 
             Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void LessThan_TwoObjectsOfSameClassWithSmallerUnderlyingValueInFirst_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new CombinedEnum(TestEnum.Value.Second);
+
+            var result = testValue1 < testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void LessThan_TwoObjectsOfSameClassWithSmallerUnderlyingValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.Second);
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 < testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void LessThan_TwoObjectsOfSameClassWithSameUnderlyingValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 < testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void LessThanOrEqual_TwoObjectsOfSameClassWithSmallerUnderlyingValueInFirst_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new CombinedEnum(TestEnum.Value.Second);
+
+            var result = testValue1 <= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void LessThanOrEqual_TwoObjectsOfSameClassWithSmallerUnderlyingValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.Second);
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 <= testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void LessThanOrEqual_TwoObjectsOfSameClassWithSameUnderlyingValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 <= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GreaterThan_TwoObjectsOfSameClassWithSmallerUnderlyingValueInFirst_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new CombinedEnum(TestEnum.Value.Second);
+
+            var result = testValue1 > testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void GreaterThan_TwoObjectsOfSameClassWithSmallerUnderlyingValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.Second);
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 > testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GreaterThan_TwoObjectsOfSameClassWithSameUnderlyingValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 > testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_TwoObjectsOfSameClassWithSmallerUnderlyingValueInFirst_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new CombinedEnum(TestEnum.Value.Second);
+
+            var result = testValue1 >= testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_TwoObjectsOfSameClassWithSmallerUnderlyingValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.Second);
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 >= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_TwoObjectsOfSameClassWithSameUnderlyingValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 >= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void LessThan_TwoObjectsOfDifferentClassWithSmallerUnderlyingValueInFirst_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new FirstEnum(TestEnum.Value.First);
+            var testValue2 = new SecondEnum(TestEnum.Value.Second);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 < testValue2; });
+        }
+
+        [Test]
+        public void LessThan_TwoObjectsOfDifferentClassWithSmallerUnderlyingValueInSecond_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new SecondEnum(TestEnum.Value.Second);
+            var testValue2 = new FirstEnum(TestEnum.Value.First);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 < testValue2; });
+        }
+
+        [Test]
+        public void LessThan_TwoObjectsOfDifferentClassWithSameUnderlyingValueInSecond_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new FirstEnum(TestEnum.Value.First);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 < testValue2; });
+        }
+
+        [Test]
+        public void LessThanOrEqual_TwoObjectsOfDifferentClassWithSmallerUnderlyingValueInFirst_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new FirstEnum(TestEnum.Value.First);
+            var testValue2 = new SecondEnum(TestEnum.Value.Second);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 <= testValue2; });
+        }
+
+        [Test]
+        public void LessThanOrEqual_TwoObjectsOfDifferentClassWithSmallerUnderlyingValueInSecond_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new SecondEnum(TestEnum.Value.Second);
+            var testValue2 = new FirstEnum(TestEnum.Value.First);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 <= testValue2; });
+        }
+
+        [Test]
+        public void LessThanOrEqual_TwoObjectsOfDifferentClassWithSameUnderlyingValueInSecond_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new FirstEnum(TestEnum.Value.First);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 <= testValue2; });
+        }
+
+        [Test]
+        public void GreaterThan_TwoObjectsOfDifferentClassWithSmallerUnderlyingValueInFirst_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new FirstEnum(TestEnum.Value.First);
+            var testValue2 = new SecondEnum(TestEnum.Value.Second);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 > testValue2; });
+        }
+
+        [Test]
+        public void GreaterThan_TwoObjectsOfDifferentClassWithSmallerUnderlyingValueInSecond_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new SecondEnum(TestEnum.Value.Second);
+            var testValue2 = new FirstEnum(TestEnum.Value.First);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 > testValue2; });
+        }
+
+        [Test]
+        public void GreaterThan_TwoObjectsOfDifferentClassWithSameUnderlyingValueInSecond_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new FirstEnum(TestEnum.Value.First);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 > testValue2; });
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_TwoObjectsOfDifferentClassWithSmallerUnderlyingValueInFirst_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new FirstEnum(TestEnum.Value.First);
+            var testValue2 = new SecondEnum(TestEnum.Value.Second);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 >= testValue2; });
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_TwoObjectsOfDifferentClassWithSmallerUnderlyingValueInSecond_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new SecondEnum(TestEnum.Value.Second);
+            var testValue2 = new FirstEnum(TestEnum.Value.First);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 >= testValue2; });
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_TwoObjectsOfDifferentClassWithSameUnderlyingValueInSecond_ShouldThrowInvalidOperationException()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = new FirstEnum(TestEnum.Value.First);
+
+            Assert.Throws<InvalidOperationException>(() => { var result = testValue1 >= testValue2; });
+        }
+
+        [Test]
+        public void LessThan_ObjectAndUnderlyingValueWithSmallerValueInFirst_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = TestEnum.Value.Second;
+
+            var result = testValue1 < testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void LessThan_ObjectAndUnderlyingValueWithSmallerValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.Second);
+            var testValue2 = TestEnum.Value.First;
+
+            var result = testValue1 < testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void LessThan_ObjectAndUnderlyingValueWithSameValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = TestEnum.Value.First;
+
+            var result = testValue1 < testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void LessThanOrEqual_ObjectAndUnderlyingValueWithSmallerValueInFirst_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = TestEnum.Value.Second;
+
+            var result = testValue1 <= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void LessThanOrEqual_ObjectAndUnderlyingValueWithSmallerValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.Second);
+            var testValue2 = TestEnum.Value.First;
+
+            var result = testValue1 <= testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void LessThanOrEqual_ObjectAndUnderlyingValueWithSameValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = TestEnum.Value.First;
+
+            var result = testValue1 <= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GreaterThan_ObjectAndUnderlyingValueWithSmallerValueInFirst_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = TestEnum.Value.Second;
+
+            var result = testValue1 > testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void GreaterThan_ObjectAndUnderlyingValueWithSmallerValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.Second);
+            var testValue2 = TestEnum.Value.First;
+
+            var result = testValue1 > testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GreaterThan_ObjectAndUnderlyingValueWithSameValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = TestEnum.Value.First;
+
+            var result = testValue1 > testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_ObjectAndUnderlyingValueWithSmallerValueInFirst_ShouldBeFalse()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = TestEnum.Value.Second;
+
+            var result = testValue1 >= testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_ObjectAndUnderlyingValueWithSmallerValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.Second);
+            var testValue2 = TestEnum.Value.First;
+
+            var result = testValue1 >= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_ObjectAndUnderlyingValueWithSameValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = new CombinedEnum(TestEnum.Value.First);
+            var testValue2 = TestEnum.Value.First;
+
+            var result = testValue1 >= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void LessThan_UnderlyingValueAndObjectWithSmallerValueInFirst_ShouldBeTrue()
+        {
+            var testValue1 = TestEnum.Value.First;
+            var testValue2 = new CombinedEnum(TestEnum.Value.Second);
+
+            var result = testValue1 < testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void LessThan_UnderlyingValueAndObjectWithSmallerValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = TestEnum.Value.Second;
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 < testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void LessThan_UnderlyingValueAndObjectWithSameValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = TestEnum.Value.First;
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 < testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void LessThanOrEqual_UnderlyingValueAndObjectWithSmallerValueInFirst_ShouldBeTrue()
+        {
+            var testValue1 = TestEnum.Value.First;
+            var testValue2 = new CombinedEnum(TestEnum.Value.Second);
+
+            var result = testValue1 <= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void LessThanOrEqual_UnderlyingValueAndObjectWithSmallerValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = TestEnum.Value.Second;
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 <= testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void LessThanOrEqual_UnderlyingValueAndObjectWithSameValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = TestEnum.Value.First;
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 <= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GreaterThan_UnderlyingValueAndObjectWithSmallerValueInFirst_ShouldBeFalse()
+        {
+            var testValue1 = TestEnum.Value.First;
+            var testValue2 = new CombinedEnum(TestEnum.Value.Second);
+
+            var result = testValue1 > testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void GreaterThan_UnderlyingValueAndObjectWithSmallerValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = TestEnum.Value.Second;
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 > testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GreaterThan_UnderlyingValueAndObjectWithSameValueInSecond_ShouldBeFalse()
+        {
+            var testValue1 = TestEnum.Value.First;
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 > testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_UnderlyingValueAndObjectWithSmallerValueInFirst_ShouldBeFalse()
+        {
+            var testValue1 = TestEnum.Value.First;
+            var testValue2 = new CombinedEnum(TestEnum.Value.Second);
+
+            var result = testValue1 >= testValue2;
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_UnderlyingValueAndObjectWithSmallerValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = TestEnum.Value.Second;
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 >= testValue2;
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GreaterThanOrEqual_UnderlyingValueAndObjectWithSameValueInSecond_ShouldBeTrue()
+        {
+            var testValue1 = TestEnum.Value.First;
+            var testValue2 = new CombinedEnum(TestEnum.Value.First);
+
+            var result = testValue1 >= testValue2;
+
+            Assert.IsTrue(result);
         }
     }
 }
