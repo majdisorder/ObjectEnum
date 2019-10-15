@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Reflection;
 
 namespace System
 {
-    public abstract class ObjectEnum<TEnum> : IEquatable<ObjectEnum<TEnum>>
+    public abstract class ObjectEnum<TEnum> : IEquatable<ObjectEnum<TEnum>>, IComparable<ObjectEnum<TEnum>>
         where TEnum : struct
     {
         private readonly TEnum _value;
@@ -85,6 +84,17 @@ namespace System
             return false;
         }
 
+        private static bool CompareGuard(ObjectEnum<TEnum> left, ObjectEnum<TEnum> right)
+        {
+            var rightType = right.GetType();
+            if (!left.IsTypeEquivalent(rightType))
+            {
+                throw new InvalidOperationException($"Cannot compare an object of Type {left.GetType()} to an object of Type {rightType}");
+            }
+
+            return true;
+        }
+
         #endregion private methods
 
         /// <summary>
@@ -117,10 +127,10 @@ namespace System
                     return IsDefined(objectEnumValue);
                 default:
                     return Enum.IsDefined(typeof(TEnum), value) &&
-                           IsDefined((TEnum) value);
+                           IsDefined((TEnum)value);
             }
         }
-        
+
         /// <summary>
         /// Indicates whether a specified value exists for this <see cref="ObjectEnum{TEnum}"/>.
         /// </summary>
@@ -129,8 +139,8 @@ namespace System
         public bool IsDefined(ObjectEnum<TEnum> value)
             => value != null &&
                IsTypeEquivalent(value.GetType()) &&
-               IsDefined((TEnum) value);
-        
+               IsDefined((TEnum)value);
+
         /// <summary>
         /// Creates a new <see cref="ObjectEnum{TEnum}"/> instance of the given concrete type.
         /// </summary>
@@ -149,7 +159,7 @@ namespace System
                     typeof(TConcrete),
                     BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
                     null,
-                    new object[] {value},
+                    new object[] { value },
                     CultureInfo.InvariantCulture
                 ) as TConcrete;
             }
@@ -187,18 +197,34 @@ namespace System
             }
         }
 
+        public int CompareTo(ObjectEnum<TEnum> other)
+            // ReSharper disable once PossibleNullReferenceException; checked in static ctor
+            => other == null ? 1 : (_value as Enum).CompareTo(other._value);
+
         public static bool operator ==(ObjectEnum<TEnum> left, ObjectEnum<TEnum> right)
             => Equals(left, right);
 
         public static bool operator !=(ObjectEnum<TEnum> left, ObjectEnum<TEnum> right)
             => !Equals(left, right);
 
+        public static bool operator <(ObjectEnum<TEnum> left, ObjectEnum<TEnum> right)
+            => CompareGuard(left, right) && left.CompareTo(right) < 0;
+
+        public static bool operator >(ObjectEnum<TEnum> left, ObjectEnum<TEnum> right)
+            => CompareGuard(left, right) && left.CompareTo(right) > 0;
+
+        public static bool operator <=(ObjectEnum<TEnum> left, ObjectEnum<TEnum> right)
+            => CompareGuard(left, right) && left.CompareTo(right) <= 0;
+
+        public static bool operator >=(ObjectEnum<TEnum> left, ObjectEnum<TEnum> right)
+            => CompareGuard(left, right) && left.CompareTo(right) >= 0;
+
         #endregion equality
 
         #region cast operators
 
         public static explicit operator int(ObjectEnum<TEnum> x)
-            => (int) (x._value as object);
+            => (int)(x._value as object);
 
         public static implicit operator TEnum(ObjectEnum<TEnum> x)
             => x._value;
