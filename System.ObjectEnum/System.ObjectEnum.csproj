@@ -18,6 +18,8 @@ Please keep in mind that this solution has not been field tested, and quite fran
     <LangVersion>latest</LangVersion>
     <PackageProjectUrl>https://github.com/dimi3tron/ObjectEnum</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dimi3tron/ObjectEnum</RepositoryUrl>
+    <PackageId>ObjectEnum</PackageId>
+    <Product>ObjectEnum</Product>
   </PropertyGroup>
 
   <ItemGroup>
