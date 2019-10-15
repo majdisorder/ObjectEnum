@@ -1,9 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace System.ObjectEnum.Tests.Models
+﻿namespace System.ObjectEnum.Tests.Models
 {
-    
-    internal abstract class TestEnum : ObjectEnum<TestEnum.Value>
+    internal abstract class AltTestEnum : ObjectEnum<AltTestEnum.Value>
     {
         public enum Value
         {
@@ -13,7 +10,7 @@ namespace System.ObjectEnum.Tests.Models
             Third = 3
         }
 
-        protected TestEnum(Value value)
+        protected AltTestEnum(Value value)
             : base(value)
         {
         }

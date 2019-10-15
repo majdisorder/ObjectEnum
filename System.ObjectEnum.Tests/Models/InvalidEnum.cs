@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace System.ObjectEnum.Tests.Models
 {
-    [ExcludeFromCodeCoverage]
+    
     internal class InvalidEnum : ObjectEnum<int>
     {
         public InvalidEnum(int value)
