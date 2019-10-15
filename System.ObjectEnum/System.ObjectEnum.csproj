@@ -20,6 +20,7 @@ Please refer to the GitHub repo for documentation as well as any issues, comment
     <RepositoryUrl>https://github.com/dimi3tron/ObjectEnum</RepositoryUrl>
     <PackageId>ObjectEnum</PackageId>
     <Product>ObjectEnum</Product>
+    <PackageTags>enum polymorphism utility</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
