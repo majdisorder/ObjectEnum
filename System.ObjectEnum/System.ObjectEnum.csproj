@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>System</RootNamespace>
-    <Version>1.0.0-alpha.1</Version>
+    <Version>1.0.0-alpha1</Version>
     <Authors>Dimitri Troncquo</Authors>
     <Description>ObjectEnum is a wrapper for enums, adding a certain degree of polymorphism.</Description>
     <AssemblyVersion>1.0.0</AssemblyVersion>
