@@ -21,6 +21,7 @@ Please refer to the GitHub repo for documentation as well as any issues, comment
     <PackageId>ObjectEnum</PackageId>
     <Product>ObjectEnum</Product>
     <PackageTags>enum polymorphism utility</PackageTags>
+    <PackageVersion>1.0.0</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
